@@ -1,7 +1,7 @@
-package biz.netcentric.security.gadjeto.engine.cmd
+package biz.netcentric.security.gadgeto.engine.cmd
 
-import biz.netcentric.security.gadjeto.engine.Module
-import biz.netcentric.security.gadjeto.model.ModuleDefinition
+import biz.netcentric.security.gadgeto.engine.Module
+import biz.netcentric.security.gadgeto.model.ModuleDefinition
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 

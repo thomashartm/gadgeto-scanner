@@ -36,9 +36,9 @@ RUN mkdir -p /usr/app
 WORKDIR /usr/app
 
 # add jar and default config
-COPY ./target/groovy-gadjeto-scanner-full.jar /usr/app/
+COPY ./target/groovy-gadgeto-scanner-full.jar /usr/app/
 COPY ./config /usr/app/config
 
 VOLUME /usr/src
 
-ENTRYPOINT ["/usr/bin/java","-jar","/usr/app/groovy-gadjeto-scanner-full.jar", "--config", "/usr/app/config"]
+ENTRYPOINT ["/usr/bin/java","-jar","/usr/app/groovy-gadgeto-scanner-full.jar", "--config", "/usr/app/config"]

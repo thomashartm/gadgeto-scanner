@@ -1,7 +1,7 @@
-package biz.netcentric.security.gadjeto.engine
+package biz.netcentric.security.gadgeto.engine
 
-import biz.netcentric.security.gadjeto.engine.cmd.CmdModule
-import biz.netcentric.security.gadjeto.model.PhaseDefinition
+import biz.netcentric.security.gadgeto.engine.cmd.CmdModule
+import biz.netcentric.security.gadgeto.model.PhaseDefinition
 
 class ConcretePhase implements Phase {
 

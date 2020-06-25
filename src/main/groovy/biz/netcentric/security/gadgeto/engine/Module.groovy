@@ -1,4 +1,4 @@
-package biz.netcentric.security.gadjeto.engine
+package biz.netcentric.security.gadgeto.engine
 
 trait Module {
 

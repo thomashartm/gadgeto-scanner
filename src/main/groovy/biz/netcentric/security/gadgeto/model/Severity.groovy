@@ -1,4 +1,4 @@
-package biz.netcentric.security.gadjeto.model
+package biz.netcentric.security.gadgeto.model
 
 enum Severity {
 

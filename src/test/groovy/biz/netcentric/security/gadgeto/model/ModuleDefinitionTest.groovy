@@ -1,6 +1,6 @@
-package biz.netcentric.security.gadjeto.model
+package biz.netcentric.security.gadgeto.model
 
-import biz.netcentric.security.gadjeto.configuration.ConfigurationParser
+
 import org.junit.jupiter.api.Test
 
 import static org.junit.Assert.assertEquals

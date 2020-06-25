@@ -1,7 +1,7 @@
-package biz.netcentric.security.gadjeto.configuration
+package biz.netcentric.security.gadgeto.configuration
 
-import biz.netcentric.security.gadjeto.engine.ConcretePhase
-import biz.netcentric.security.gadjeto.model.PhaseDefinition
+import biz.netcentric.security.gadgeto.engine.ConcretePhase
+import biz.netcentric.security.gadgeto.model.PhaseDefinition
 import groovy.util.logging.Slf4j
 import groovy.yaml.YamlSlurper
 
@@ -11,7 +11,7 @@ class ConfigurationParser {
     List<ConcretePhase> loadAllFromConfig(List<File> configLocations) {
         List<ConcretePhase> phases = []
         configLocations.each { file ->
-            log.info "Loading configuration from: ${file}"
+            log.debug "Loading configuration from: ${file}"
             if (file != null && file.exists()) {
                 if (file.isDirectory()) {
                     // load contents

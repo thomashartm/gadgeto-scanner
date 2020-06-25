@@ -1,7 +1,7 @@
-# Groovy Gadjeto Scanner
+# Groovy Gadgeto Scanner
 
 Runs a set of security checks grouped by pentesting phase and configurable as pen testing profiles.
-For each situation, the container and the profile canbe equipped with the fitting gadget. 
+For each situation, the container and the profile can be equipped with the fitting gadget. 
 
 Each check uses of a set of underlying tools such as nmap or sslyze.
 The application uses a Dockerized Kali environment which has those tools preinstalled. 
@@ -10,15 +10,15 @@ The application uses a Dockerized Kali environment which has those tools preinst
 
 Dockerized
 
-    docker run -p 5050:5050 --rm -it gadjetoscanner --phase <phasename> --url <target>
+    docker run -p 5050:5050 --rm -it gadgetoscanner --phase <phasename> --url <target>
     
 Example    
     
-    docker run -p 5050:5050 --rm -it gadjetoscanner --phase info --url localhost:8080
+    docker run -p 5050:5050 --rm -it gadgetoscanner --phase info --url localhost:8080
 
 Without docker on a local instance with all dependencies and tools available
 
-    java -jar groovy-gadjeto-scanner.jar --phase <phasename> --url <target> 
+    java -jar groovy-gadgeto-scanner.jar --phase <phasename> --url <target> 
 
 ## Parameters
 
@@ -40,19 +40,19 @@ Build the tool
     
 Build the docker image
 
-    docker build --no-cache -t gadjetoscanner . 
+    docker build --no-cache -t gadgetoscanner . 
         
 ## Debug the application inside the container
 
 Run the application while developing    
 
-    java -agentlib:jdwp=transport=dt_socket,address=5050,suspend=y,server=y -jar target/groovy-gadjeto-scanner-1.0-SNAPSHOT.jar --phase info --url http://172.17.0.3:8080/WebGoat
+    java -agentlib:jdwp=transport=dt_socket,address=5050,suspend=y,server=y -jar target/groovy-gadgeto-scanner-1.0-SNAPSHOT.jar --phase info --url http://172.17.0.3:8080/WebGoat
         
 ## Installation for development
 
 Run a container for local development
     
-    docker run -p 5050:5050 --rm -it -v $(pwd):/usr/app gadjetoscanner
+    docker run -p 5050:5050 --rm -it -v $(pwd):/usr/app gadgetoscanner
     
 ## Testing the application
 

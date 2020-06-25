@@ -1,4 +1,4 @@
-package biz.netcentric.security.gadjeto.configuration
+package biz.netcentric.security.gadgeto.configuration
 
 import groovy.util.logging.Slf4j
 

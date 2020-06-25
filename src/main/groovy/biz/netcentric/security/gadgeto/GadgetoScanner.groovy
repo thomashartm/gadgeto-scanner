@@ -1,15 +1,14 @@
-package biz.netcentric.security.gadjeto
+package biz.netcentric.security.gadgeto
 
-import biz.netcentric.security.gadjeto.configuration.ConfigLocationFinder
-import biz.netcentric.security.gadjeto.configuration.ConfigurationParser
-import biz.netcentric.security.gadjeto.engine.ConcretePhase
-import biz.netcentric.security.gadjeto.engine.Phase
+import biz.netcentric.security.gadgeto.configuration.ConfigLocationFinder
+import biz.netcentric.security.gadgeto.configuration.ConfigurationParser
+import biz.netcentric.security.gadgeto.engine.Phase
 import groovy.cli.picocli.CliBuilder
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 
 @Slf4j
-class GadjetoScanner {
+class GadgetoScanner {
 
     ConfigurationParser configParser
 
@@ -17,14 +16,16 @@ class GadjetoScanner {
 
     Map<String, Phase> phases = [:]
 
-    GadjetoScanner(){
+    GadgetoScanner(){
         this.configFinder = new ConfigLocationFinder()
         this.configParser = new ConfigurationParser()
     }
 
     static void main(String[] args) {
-
         CliBuilder cli = createCommandLineOptions()
+
+        println Constants.GADGETO_LOGO
+
         def options = cli.parse(args)
         assert options // would be null (false) on failure
         // only the URL is mandatory.
@@ -34,8 +35,8 @@ class GadjetoScanner {
             options.arguments()
         }
 
-        def gadjetoScanner = new GadjetoScanner()
-        gadjetoScanner.run(options)
+        def gadgetoScanner = new GadgetoScanner()
+        gadgetoScanner.run(options)
     }
 
     private static CliBuilder createCommandLineOptions() {
@@ -64,10 +65,10 @@ class GadjetoScanner {
         assert (this.phases.containsKey(phaseId))
 
         Phase phaseToExecute = this.phases.get(phaseId)
-        log.info "Starting selected phase ${phaseToExecute.getPhaseId()}"
+        println "Starting selected phase ${phaseToExecute.getPhaseId()}"
         String targetUrl = options.getProperty('url')
         phaseToExecute.execute(targetUrl)
-        log.info "Finished"
+        println "Gadgeto Scanner is done!"
     }
 
     private void loadPhases(List<File> configurations){
@@ -82,7 +83,7 @@ class GadjetoScanner {
         if(StringUtils.isEmpty(configLocation)){
             return this.configFinder.getConfigFiles([configLocation])
         }else{
-            log.info "No config property provided. Falling back to to configuration location: config"
+            println "No config property provided. Falling back to to configuration location: config"
             List<String> files = []
             files.add("config")
             return this.configFinder.getConfigFiles(files)

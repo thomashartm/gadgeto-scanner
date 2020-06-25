@@ -1,4 +1,4 @@
-package biz.netcentric.security.gadjeto.engine.cmd
+package biz.netcentric.security.gadgeto.engine.cmd
 
 class CmdToolResponse {
 
