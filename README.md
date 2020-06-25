@@ -1,33 +1,60 @@
 # Groovy Gadjeto Scanner
 
-Runs a set of checks grouped by pen testing phase.
-Each check consists of a set of underlying tools such 
-as nmap or sslyze.
+Runs a set of security checks grouped by pentesting phase and configurable as pen testing profiles.
+For each situation, the container and the profile canbe equipped with the fitting gadget. 
 
-The application is supposed to run in an environment which has those tools preinstalled. 
-Therefore run it in the context of a Dockerized Kali environment.
+Each check uses of a set of underlying tools such as nmap or sslyze.
+The application uses a Dockerized Kali environment which has those tools preinstalled. 
+
+# Run it
+
+Dockerized
+
+    docker run -p 5050:5050 --rm -it gadjetoscanner --phase <phasename> --url <target>
+    
+Example    
+    
+    docker run -p 5050:5050 --rm -it gadjetoscanner --phase info --url localhost:8080
+
+Without docker on a local instance with all dependencies and tools available
+
+    java -jar groovy-gadjeto-scanner.jar --phase <phasename> --url <target> 
+
+## Parameters
+
+The tool can either show all available phases through the list parameter or execute a scan
+List execution:
+--list Show all available phases (mandatory)
+
+Scan execution:
+
+--phase <phasename> (mandatory)
+--url <target> (mandatory)
+--config <path to configlocation>
 
 # Development Guide
 
-Build it
+Build the tool
     
     mvn clean package
-
-Run it (requires the tool dependencies to be installed)
-
-    java -jar groovy-gadjeto-scanner.jar --phase <phasename> --url <target>
     
-## Installation
-
 Build the docker image
 
-    docker build --no-cache -t gadjetoscanner .  
-    
+    docker build --no-cache -t gadjetoscanner . 
+        
+## Debug the application inside the container
+
+Run the application while developing    
+
+    java -agentlib:jdwp=transport=dt_socket,address=5050,suspend=y,server=y -jar target/groovy-gadjeto-scanner-1.0-SNAPSHOT.jar --phase info --url http://172.17.0.3:8080/WebGoat
+        
+## Installation for development
+
 Run a container for local development
     
-    docker run -p 50505:50505 --rm -it -v $(pwd):/usr/src gadjetoscanner
+    docker run -p 5050:5050 --rm -it -v $(pwd):/usr/app gadjetoscanner
     
-### Testing the application
+## Testing the application
 
 WebGoat can be used to test the application. https://owasp.org/www-project-webgoat/
 
@@ -44,18 +71,9 @@ Check docker networking to find internal IPs
 
      docker network inspect bridge    
     
-
-    
-## Run the application inside the container
-
-
-Run the application while developing    
-
-    java -agentlib:jdwp=transport=dt_socket,address=50505,suspend=y,server=y -jar target/groovy-gadjeto-scanner-1.0-SNAPSHOT.jar --phase info --url http://172.17.0.3:8080/WebGoat
-    
 Then connect with your remote debugger on port 50505
     
-# Development Backlog
+## Development Backlog
 
 * Easy simple start script
 * Debug support for easy simple start script 

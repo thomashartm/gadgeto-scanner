@@ -3,12 +3,14 @@ package biz.netcentric.security.gadjeto.model
 class TriageUtil {
 
     static Severity getSeverityByRank(int rank){
-        Severity.values().each {severity ->
-            if(severity.getRank() == rank){
-                return severity
+        Severity severity = Severity.NONE
+        Severity.values().each {sev ->
+            if(sev.getRank() == rank){
+                severity = sev
+                return
             }
         }
 
-        Severity.NONE
+        severity
     }
 }
