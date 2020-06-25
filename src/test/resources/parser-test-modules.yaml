@@ -1,0 +1,26 @@
+modules:
+  - name: "heartbleed-nmap"
+    executable: "nmap"
+    args: "-p443 --script ssl-heartbleed -Pn"
+    argsList: []
+    vuln:
+      - title: ""
+      - description: ""
+      - remediation: ""
+  - name: "poodle-nmap"
+    executable: "nmap"
+    args: "-p443 --script ssl-poodle -Pn "
+    argsList: []
+    vuln:
+      - title: ""
+      - description: ""
+      - remediation: ""
+  - name: "ccs-injection"
+    executable: "nmap"
+    args: "nmap -p443 --script ssl-ccs-injection -Pn "
+    argsList: []
+    vuln:
+      - title: ""
+      - description: ""
+      - remediation: ""
+

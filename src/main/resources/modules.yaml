@@ -1,0 +1,10 @@
+- name: "heartbleed-nmap"
+  executable: "nmap"
+  args: "-p443 --script ssl-heartbleed -Pn "
+- name: "poodle-nmap"
+  executable: "nmap"
+  args: "-p443 --script ssl-poodle -Pn "
+- name: "ccs-injection"
+  executable: "nmap"
+  args: "nmap -p443 --script ssl-ccs-injection -Pn "
+

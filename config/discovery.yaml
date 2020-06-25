@@ -1,0 +1,26 @@
+id: discovery
+name: Discovery Phase
+description: "Vulnerability Discovery Phase"
+modules:
+  - name: "heartbleed-nmap"
+    executable: "nmap"
+    args: "-p443 -v --script ssl-heartbleed -Pn "
+    positiveResponse:
+      - "ssl-heartbleed"
+      - "VULNERABLE"
+  - name: "poodle-nmap"
+    executable: "nmap"
+    args: "-p443 -v --script ssl-poodle -Pn "
+    positiveResponse:
+      - "ssl-ccs-injection"
+      - "VULNERABLE"
+  - name: "ccs-injection"
+    executable: "nmap"
+    args: "-p443 -v --script ssl-ccs-injection -Pn "
+    positiveResponse:
+      - "VULNERABLE"
+  - name: "nmap http-security-headers"
+    executable: "nmap"
+    args: "-p80 --script http-security-headers -Pn "
+    positiveResponse:
+      - "VULNERABLE"

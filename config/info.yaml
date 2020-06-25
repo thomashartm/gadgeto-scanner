@@ -1,0 +1,10 @@
+id: info
+name: Information Phase
+description: "Information gathering phase"
+modules:
+  - name: "nmap fast port checks"
+    executable: "nmap"
+    args: "-F --open -Pn "
+    severity: "0"
+    positiveResponse:
+      - "RE:22/tcp"
