@@ -75,11 +75,16 @@ Then connect with your remote debugger on port 50505
     
 ## Development Backlog
 
+* Severity ranking and vulnerability description is part of the results
+* Installation check for tools
+* More default phases and checks
+* Interactive mode
+* Write to report directory  
 * Easy simple start script
 * Debug support for easy simple start script 
 * List executable dependencies for different phases
-* Read phases from config files in config directory
-* Config phases reference module.yaml
-* Check if dependencies are available
+* Read phases from config files in config directory (done)
+* Config phases reference module.yaml (done)
+* Check if dependencies are available 
 * Report generation     
 * Load configs from remote resources

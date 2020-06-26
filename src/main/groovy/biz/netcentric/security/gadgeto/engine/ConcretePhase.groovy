@@ -1,6 +1,8 @@
 package biz.netcentric.security.gadgeto.engine
 
+import biz.netcentric.security.gadgeto.engine.cmd.CmdLayout
 import biz.netcentric.security.gadgeto.engine.cmd.CmdModule
+import biz.netcentric.security.gadgeto.engine.cmd.CmdSupport
 import biz.netcentric.security.gadgeto.model.PhaseDefinition
 
 class ConcretePhase implements Phase {
@@ -20,9 +22,25 @@ class ConcretePhase implements Phase {
     @Override
     List<Module> getAll() {
         List<Module> modules = []
+        List<String> tools = []
         phaseDefinition.getModules().each {definition ->
-            modules.add new CmdModule(moduleDefinition: definition)
+            String executable = definition.executable
+
+            boolean installed = false
+            if(!tools.contains(executable)){
+                installed = CmdSupport.verifyIfInstalled(executable)
+                tools.add executable
+            }else{
+                installed = true
+            }
+
+            if(installed) {
+                modules.add new CmdModule(moduleDefinition: definition)
+            }else{
+                CmdSupport.printMessage CmdLayout.WARNING, "[PRE-CHECK] Skipping module ${definition.name}. Required executable ${executable} is not installed."
+            }
         }
+
         return modules
     }
 }

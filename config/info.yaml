@@ -8,3 +8,9 @@ modules:
     severity: "0"
     positiveResponse:
       - "RE:22/tcp"
+  - name: "sslyze fast port checks"
+    executable: "sslyze"
+    args: "--certinfo=basic "
+    severity: "0"
+    positiveResponse:
+      - "RE:22/tcp"
