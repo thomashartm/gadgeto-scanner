@@ -76,7 +76,7 @@ Then connect with your remote debugger on port 50505
 ## Development Backlog
 
 * Severity ranking and vulnerability description is part of the results
-* Installation check for tools
+* Installation check for tools (done)
 * More default phases and checks
 * Interactive mode
 * Write to report directory  

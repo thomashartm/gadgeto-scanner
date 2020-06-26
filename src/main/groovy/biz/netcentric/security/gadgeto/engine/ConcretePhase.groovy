@@ -22,19 +22,22 @@ class ConcretePhase implements Phase {
     @Override
     List<Module> getAll() {
         List<Module> modules = []
-        List<String> tools = []
+        List<String> ignored = []
+        List<String> installed = []
         phaseDefinition.getModules().each {definition ->
             String executable = definition.executable
 
-            boolean installed = false
-            if(!tools.contains(executable)){
-                installed = CmdSupport.verifyIfInstalled(executable)
-                tools.add executable
-            }else{
-                installed = true
+
+            if(!installed.contains(executable) && !ignored.contains(executable)){
+                boolean installStatus = CmdSupport.verifyIfInstalled(executable)
+                if(installStatus){
+                    installed.add executable
+                }else{
+                    ignored.add executable
+                }
             }
 
-            if(installed) {
+            if(installed.contains(executable)) {
                 modules.add new CmdModule(moduleDefinition: definition)
             }else{
                 CmdSupport.printMessage CmdLayout.WARNING, "[PRE-CHECK] Skipping module ${definition.name}. Required executable ${executable} is not installed."
