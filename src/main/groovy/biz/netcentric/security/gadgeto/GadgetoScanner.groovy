@@ -3,9 +3,12 @@ package biz.netcentric.security.gadgeto
 import biz.netcentric.security.gadgeto.configuration.ConfigLocationFinder
 import biz.netcentric.security.gadgeto.configuration.ConfigurationParser
 import biz.netcentric.security.gadgeto.engine.Phase
+import biz.netcentric.security.gadgeto.engine.cmd.CmdLayout
 import groovy.cli.picocli.CliBuilder
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
+
+import static biz.netcentric.security.gadgeto.engine.cmd.CmdSupport.printMessage
 
 @Slf4j
 class GadgetoScanner {
@@ -65,10 +68,12 @@ class GadgetoScanner {
         assert (this.phases.containsKey(phaseId))
 
         Phase phaseToExecute = this.phases.get(phaseId)
-        println "Starting selected phase ${phaseToExecute.getPhaseId()}"
+        printMessage CmdLayout.HEADLINE,"[INIT] Starting selected phase ${phaseToExecute.getPhaseId()}"
+
         String targetUrl = options.getProperty('url')
         phaseToExecute.execute(targetUrl)
-        println "Gadgeto Scanner is done!"
+
+        printMessage CmdLayout.HEADLINE,"[DONE] Gadgeto Scanner is done!"
     }
 
     private void loadPhases(List<File> configurations){
@@ -83,7 +88,7 @@ class GadgetoScanner {
         if(StringUtils.isEmpty(configLocation)){
             return this.configFinder.getConfigFiles([configLocation])
         }else{
-            println "No config property provided. Falling back to to configuration location: config"
+            printMessage CmdLayout.HEADLINE, "[INIT] No config property provided. Falling back to to configuration location: config"
             List<String> files = []
             files.add("config")
             return this.configFinder.getConfigFiles(files)

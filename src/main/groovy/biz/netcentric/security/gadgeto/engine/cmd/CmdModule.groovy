@@ -68,29 +68,29 @@ class CmdModule implements Module{
 
         CmdSupport.printMessage exec, command
 
+        def proc = null
         try {
-            def proc = command.execute()
+            proc = command.execute()
             CmdToolResponse result = process(proc)
-            proc.out.close()
-
             return result
         } catch (Exception ex) {
-            handleError(exec, command, ex)
+            CmdSupport.handleError(true, exec, command, ex)
+        }finally{
+            if(proc != null && proc.out != null && proc.out instanceof OutputStream){
+                log.debug "Closing proc"
+                proc.out.close()
+            }
         }
+
+        // replace upper statement with
+        //CommandlineProcessRunner runner = new CommandlineProcessRunner()
+        //CmdToolResponse result = runner.runProcess(exec, command, process)
 
         // empty default response
         return new CmdToolResponse()
     }
 
-    private void handleError(String exec, GString command, Exception ex) {
-        CmdSupport.printError exec, command
 
-        if (debugEnabled) {
-            log.error ex.toString(), ex
-        } else {
-            log.error "[ERROR]: ${ex.toString()}"
-        }
-    }
 
     boolean isMatch(String pattern, String value){
         boolean result = false
