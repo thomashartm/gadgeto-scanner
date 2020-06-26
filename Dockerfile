@@ -1,6 +1,7 @@
 FROM kalilinux/kali-rolling
 
 # OS update
+RUN echo "deb http://old.kali.org/kali sana main non-free contrib" >> ./etc/apt/sources.list
 RUN apt-get update && apt-get -yu dist-upgrade -y
 
 # Install tools
@@ -10,6 +11,7 @@ RUN apt-get install -y openjdk-11-jdk
 
 # Python ENV installation
 RUN apt-get install -y \
+  python2.7 \
   subversion \
   wget \
   whatweb \
@@ -21,7 +23,9 @@ RUN apt-get install -y \
   dnsmap \
   sublist3r \
   knockpy \
-  wig
+  wig \
+  dirb \
+  golismero
 
 RUN cd /tmp && \
     wget http://dl.bintray.com/groovy/maven/apache-groovy-binary-3.0.4.zip && \

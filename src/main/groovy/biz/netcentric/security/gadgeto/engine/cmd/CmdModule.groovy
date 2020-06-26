@@ -89,7 +89,9 @@ class CmdModule implements Module {
 
     def execute(String target, Closure process) {
         def exec = moduleDefinition.getExecutable()
-        def command = "${exec} ${moduleDefinition.getArgs()} ${target}"
+
+        String command = createCommand(target, exec)
+
 
         CmdSupport.printMessage CmdLayout.OKBLUE, "[NAME] ${moduleDefinition.getName()}"
         CmdSupport.printMessage exec, command
@@ -114,6 +116,17 @@ class CmdModule implements Module {
 
         // empty default response
         return new CmdToolResponse()
+    }
+
+    private String createCommand(String target, exec) {
+        def command
+        if (moduleDefinition.getArgs().contains("<url>")) {
+            String arguments = moduleDefinition.getArgs().replace("<url>", target)
+            command = "${exec} ${arguments}"
+        } else {
+            command = "${exec} ${moduleDefinition.getArgs()} ${target}"
+        }
+        command
     }
 
 
