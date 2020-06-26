@@ -18,7 +18,10 @@ RUN apt-get install -y \
   nikto \
   theharvester \
   whois \
-  dnsmap
+  dnsmap \
+  sublist3r \
+  knockpy \
+  wig
 
 RUN cd /tmp && \
     wget http://dl.bintray.com/groovy/maven/apache-groovy-binary-3.0.4.zip && \

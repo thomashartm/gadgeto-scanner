@@ -46,7 +46,7 @@ class CmdModule implements Module {
                 }
 
                 if (StringUtils.equalsIgnoreCase(moduleDefinition.getMode(), "print")) {
-                    responseBuilder.append "[OUTPUT] ${line}"
+                    responseBuilder.append "${line}\\n"
                 }
             }
 

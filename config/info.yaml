@@ -10,24 +10,31 @@ modules:
       - "RE:22/tcp"
   - name: "whatweb high level info"
     executable: "whatweb"
-    args: "-a 1 "
+    args: "-a 3 "
     severity: 0
     mode: print
   - name: "whatweb extended recon"
     executable: "whatweb"
-    args: "-a 1 --plugins Adobe-Flash,Apache,AmazonElasticLoadBalancer,Day-Communique"
+    args: "-a 3 --plugins Adobe-Flash,Apache,AmazonElasticLoadBalancer,Day-Communique"
     severity: 0
     mode: print
   - name: "nmap waf fingerprint"
     executable: "nmap"
-    args: "--script=/usr/app/nse/http-waf-fingerprint "
+    args: "-sV --script=/usr/app/nse/http-waf-fingerprint "
     severity: 0
     mode: filter
     positiveResponse:
       - "Detected WAF"
+  - name: "nmap fingerprint strings"
+    executable: "nmap"
+    args: "-sV --script=/usr/app/nse/fingerprint-strings "
+    severity: 0
+    mode: print
+    positiveResponse:
+      - "bobo"
   - name: "nmap banner grabbing"
     executable: "nmap"
-    args: "--script=/usr/app/nse/banner "
+    args: "-sV --script=/usr/app/nse/banner "
     severity: 0
     mode: print
     positiveResponse:
@@ -35,11 +42,31 @@ modules:
       - "banner"
   - name: "nmap authentication finder"
     executable: "nmap"
-    args: "--script=/usr/app/nse/http-auth-finder "
+    args: "-sV --script=/usr/app/nse/http-auth-finder "
     severity: 0
     mode: print
   - name: "nmap backup finder"
     executable: "nmap"
-    args: "--script=/usr/app/nse/backup-finder -maxdepth 3 "
+    args: "-sV --script=/usr/app/nse/backup-finder -maxdepth 3 "
+    severity: 0
+    mode: print
+  - name: "nmap cors"
+    executable: "nmap"
+    args: "--script=/usr/app/nse/http-cors "
+    severity: 0
+    mode: print
+  - name: "knockpy "
+    executable: "knockpy"
+    args: " "
+    severity: 0
+    mode: print
+  - name: "sublist3r "
+    executable: "sublist3r"
+    args: "-v -d  "
+    severity: 0
+    mode: print
+  - name: "wig - web app information gatherer"
+    executable: "wig"
+    args: "-q -m  "
     severity: 0
     mode: print
