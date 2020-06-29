@@ -4,7 +4,12 @@ Runs a set of security checks grouped by pentesting phase and configurable as pe
 For each situation, the container and the profile can be equipped with the fitting gadget. 
 
 Each check uses of a set of underlying tools such as nmap or sslyze.
-The application uses a Dockerized Kali environment which has those tools preinstalled. 
+The application uses a dockerized Kali environment which has the required tools preinstalled. 
+
+# Why
+Because it costs a lot of time to pre execute the automation part of each pen testing phase and th eplethora of tools over and over again.
+Additionally each environment may have ifferent pre conditions and a slightly different stack. 
+So it makes sense to prepare and mantain different tools setups and configurations.
 
 # Run it
 
@@ -31,6 +36,39 @@ Scan execution:
 --phase <phasename> (mandatory)
 --url <target> (mandatory)
 --config <path to configlocation>
+    
+    
+## Create and use your own config
+
+Clone the repository and build the container.
+Prepare a config directory and put your own custom configs in e.g. in the current location
+
+    mkdir customconfig
+    touch example-info-phase.yaml
+    
+Open the yaml file and add a phase definition. The following one is named info and contains to nmap based checks
+
+    id: info
+    name: Information Phase
+    description: "Information gathering phase"
+    modules:
+      - name: "nmap fast port checks"
+        executable: "nmap"
+        args: "-F --open -Pn "
+        severity: 0
+        positiveResponse:
+          - "RE:22/tcp"
+     - name: "nmap cors"
+        executable: "nmap"
+        args: "--script=/usr/app/nse/http-cors "
+        severity: 0
+        mode: print
+
+Now start the contaner it while adding your own config directory volume. 
+Use the info phase.
+    
+    docker run -p 5050:5050 --rm -it -v $(pwd)/customconfig:/usr/app/customconfig gadgetoscanner --phase info ---config /usr/app/customconfig --url <target>
+
 
 # Development Guide
 
