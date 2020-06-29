@@ -27,26 +27,25 @@ class CmdModule implements Module {
                     println line
                 }
 
-
                 if (positivePatterns.size() > 0 || failPatterns.size() > 0) {
                     boolean failed = failPatterns.stream()
                             .anyMatch(pattern -> isMatch(pattern, line))
 
                     if (failed) {
-                        errorBuilder.append "[STATUS] Module failed: ${line}"
+                        errorBuilder.append "[STATUS] Module failed: ${line}" + System.lineSeparator()
                     } else {
                         // check for success now
                         boolean success = positivePatterns.stream()
                                 .anyMatch(pattern -> isMatch(pattern, line))
 
                         if (success) {
-                            responseBuilder.append "[STATUS] Positive match ::: ${line}"
+                            responseBuilder.append "[STATUS] Positive match ::: ${line}" + System.lineSeparator()
                         }
                     }
                 }
 
                 if (StringUtils.equalsIgnoreCase(moduleDefinition.getMode(), "print")) {
-                    responseBuilder.append "${line}\\n"
+                    responseBuilder.append "${line}" + System.lineSeparator()
                 }
             }
 
@@ -121,7 +120,7 @@ class CmdModule implements Module {
     private String createCommand(String target, exec) {
         def command
         if (moduleDefinition.getArgs().contains("<url>")) {
-            String arguments = moduleDefinition.getArgs().replace("<url>", target)
+            String arguments = moduleDefinition.getArgs().replaceAll("<url>", target)
             command = "${exec} ${arguments}"
         } else {
             command = "${exec} ${moduleDefinition.getArgs()} ${target}"
