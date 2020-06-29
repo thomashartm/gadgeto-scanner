@@ -24,3 +24,8 @@ modules:
     args: "-p80 --script http-security-headers -Pn "
     positiveResponse:
       - "VULNERABLE"
+  - name: "assetfinder to detect related domains and subdomains "
+    executable: "assetfinder"
+    args: " "
+    positiveResponse:
+      - "VULNERABLE"

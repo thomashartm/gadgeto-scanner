@@ -28,6 +28,17 @@ class CmdSupport {
         return result
     }
 
+    static boolean verifyDependenciesAreInstalled(List<String> dependencies){
+        int missingDependencies = 0
+        dependencies.each {dependency->
+            boolean isInstalled = verifyIfInstalled(dependency)
+            if(!isInstalled){
+                log.debug "Dependency ${dependency} is not installed."
+                missingDependencies++
+            }
+        }
+    }
+
     static void handleError(boolean debugEnabled, String exec, String command, Exception ex) {
         printError exec, command
 
@@ -39,18 +50,18 @@ class CmdSupport {
     }
 
     static void printMessage(CmdLayout type, String message) {
-        println type.format(message)
+        println type.format(message) + System.lineSeparator()
     }
 
     static void printMessage(String name, String message) {
-        println CmdLayout.OKBLUE.format("[TOOL] ${name} ::: ${message}")
+        println CmdLayout.OKBLUE.format("[TOOL] ${name} ::: ${message}") + System.lineSeparator()
     }
 
     static void printError(String name, String message) {
-        println CmdLayout.FAIL.format("[ERROR] ::: ${message}")
+        println CmdLayout.FAIL.format("[ERROR] ::: ${message}") + System.lineSeparator()
     }
 
     static void emptyLine(){
-        println ""
+        println "" + System.lineSeparator()
     }
 }

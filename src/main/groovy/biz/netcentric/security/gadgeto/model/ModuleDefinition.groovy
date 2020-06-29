@@ -16,6 +16,8 @@ class ModuleDefinition {
 
     String mode
 
+    List<String> dependencies
+
     List<String> positiveResponse
 
     List<String> failedResponse

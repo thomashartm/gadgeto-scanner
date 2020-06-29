@@ -9,6 +9,9 @@ RUN apt-get -y install wget unzip
 
 RUN apt-get install -y openjdk-11-jdk
 
+# Install golang
+RUN apt-get install -y golang-go
+
 # Python ENV installation
 RUN apt-get install -y \
   python2.7 \
@@ -33,19 +36,30 @@ RUN cd /tmp && \
     mv groovy-3.0.4 /groovy && \
     rm apache-groovy-binary-3.0.4.zip
 
+# Environment variable section
+
 ENV NMAP_SCRIPTS_REPOSITORY_URL https://svn.nmap.org/nmap/scripts/
 
-#ENV JAVA_HOME /jdk
 ENV GROOVY_HOME /groovy
 ENV PATH $GROOVY_HOME/bin/:$PATH
+
+ENV GOROOT=/usr/lib/go
+ENV GOPATH=$HOME/go
+ENV PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 # Debug Port
 EXPOSE 5050
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/app
+
+# Tool and script installations
+# nmap dependencies
 RUN svn checkout  https://svn.nmap.org/nmap/scripts/ nse
-#RUN wget -r -nH --cut-dirs=2 --no-parent --reject="index.html*" https://svn.nmap.org/nmap/scripts/http-backup-finder.nse -P /usr/app/nse
+
+# assetfinder installation
+RUN go get -u github.com/tomnomnom/assetfinder
+RUN go get -u github.com/tomnomnom/httprobe
 
 WORKDIR /usr/app
 
@@ -55,4 +69,4 @@ COPY ./config /usr/app/config
 
 VOLUME /usr/src
 
-ENTRYPOINT ["/usr/bin/java","-jar","/usr/app/groovy-gadgeto-scanner-full.jar", "--config", "/usr/app/config"]
+#ENTRYPOINT ["/usr/bin/java","-jar","/usr/app/groovy-gadgeto-scanner-full.jar", "--config", "/usr/app/config"]
