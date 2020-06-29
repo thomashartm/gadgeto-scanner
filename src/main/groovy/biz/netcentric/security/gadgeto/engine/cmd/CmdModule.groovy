@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils
 
 
 @Slf4j
-class CmdModule implements Module{
+class CmdModule implements Module {
 
     ModuleDefinition moduleDefinition
 
@@ -23,23 +23,30 @@ class CmdModule implements Module{
             StringBuilder errorBuilder = new StringBuilder()
 
             proc.in.eachLine { line ->
-                if(debugEnabled){
+                if (debugEnabled) {
                     println line
                 }
 
-                boolean failed = failPatterns.stream()
-                        .anyMatch(pattern -> isMatch(pattern, line))
 
-                if(failed){
-                    errorBuilder.append "[STATUS] Module failed: ${line}"
-                }else{
-                    // check for success now
-                    boolean success = positivePatterns.stream()
+                if (positivePatterns.size() > 0 || failPatterns.size() > 0) {
+                    boolean failed = failPatterns.stream()
                             .anyMatch(pattern -> isMatch(pattern, line))
 
-                    if(success){
-                        responseBuilder.append "[STATUS] Positive match ::: ${line}"
+                    if (failed) {
+                        errorBuilder.append "[STATUS] Module failed: ${line}"
+                    } else {
+                        // check for success now
+                        boolean success = positivePatterns.stream()
+                                .anyMatch(pattern -> isMatch(pattern, line))
+
+                        if (success) {
+                            responseBuilder.append "[STATUS] Positive match ::: ${line}"
+                        }
                     }
+                }
+
+                if (StringUtils.equalsIgnoreCase(moduleDefinition.getMode(), "print")) {
+                    responseBuilder.append "${line}\\n"
                 }
             }
 
@@ -48,12 +55,19 @@ class CmdModule implements Module{
 
         CmdToolResponse response = execute(target, processHandler)
 
-        if(response.hasErrors()){
+        if (response.hasErrors()) {
             CmdSupport.printMessage CmdLayout.WARNING, response.getStrError().toString()
-        }else if(response.hasOutput()){
+        } else if (response.hasOutput()) {
+            CmdLayout severityLayout = getSeverityLayout()
+            CmdSupport.printMessage severityLayout, "[SEVERITY] ${moduleDefinition.getSeverityLevel()}"
+
+            if(StringUtils.isNotBlank(moduleDefinition.getDescription())){
+                CmdSupport.printMessage CmdLayout.OKBLUE, "[DESCRIPTION] ${moduleDefinition.getDescription()}"
+            }
+
             CmdSupport.printMessage CmdLayout.OKGREEN, response.getStrOut().toString()
-        }else{
-            CmdSupport.printMessage CmdLayout.OKBLUE,  "[STATUS] OK"
+        } else {
+            CmdSupport.printMessage CmdLayout.OKBLUE, "[STATUS] OK"
         }
 
         CmdSupport.printMessage moduleDefinition.getExecutable(), "finished"
@@ -62,10 +76,24 @@ class CmdModule implements Module{
         CmdSupport.emptyLine()
     }
 
+    private CmdLayout getSeverityLayout() {
+        CmdLayout severityLayout = CmdLayout.OKBLUE
+        if (moduleDefinition.getSeverity() == 1) {
+            severityLayout = CmdLayout.WARNING
+        } else if (moduleDefinition.getSeverity() > 1) {
+            severityLayout = CmdLayout.FAIL
+        }
+
+        severityLayout
+    }
+
     def execute(String target, Closure process) {
         def exec = moduleDefinition.getExecutable()
-        def command = "${exec} ${moduleDefinition.getArgs()} ${target}"
 
+        String command = createCommand(target, exec)
+
+
+        CmdSupport.printMessage CmdLayout.OKBLUE, "[NAME] ${moduleDefinition.getName()}"
         CmdSupport.printMessage exec, command
 
         def proc = null
@@ -75,8 +103,8 @@ class CmdModule implements Module{
             return result
         } catch (Exception ex) {
             CmdSupport.handleError(true, exec, command, ex)
-        }finally{
-            if(proc != null && proc.out != null && proc.out instanceof OutputStream){
+        } finally {
+            if (proc != null && proc.out != null && proc.out instanceof OutputStream) {
                 log.debug "Closing proc"
                 proc.out.close()
             }
@@ -90,9 +118,19 @@ class CmdModule implements Module{
         return new CmdToolResponse()
     }
 
+    private String createCommand(String target, exec) {
+        def command
+        if (moduleDefinition.getArgs().contains("<url>")) {
+            String arguments = moduleDefinition.getArgs().replace("<url>", target)
+            command = "${exec} ${arguments}"
+        } else {
+            command = "${exec} ${moduleDefinition.getArgs()} ${target}"
+        }
+        command
+    }
 
 
-    boolean isMatch(String pattern, String value){
+    boolean isMatch(String pattern, String value) {
         boolean result = false
         // check if the pattern is a regex if not me match using contains
         if (StringUtils.isNotBlank(pattern)) {
@@ -107,12 +145,12 @@ class CmdModule implements Module{
         result
     }
 
-    List getFailPattern(){
+    List getFailPattern() {
         List<String> responsePattern = this.moduleDefinition.getFailedResponse()
         responsePattern != null ? responsePattern : []
     }
 
-    List getPositiveResponsePatterns(){
+    List getPositiveResponsePatterns() {
         List<String> responsePattern = this.moduleDefinition.getPositiveResponse()
         responsePattern != null ? responsePattern : []
     }

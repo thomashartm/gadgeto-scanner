@@ -14,7 +14,7 @@ class ModuleDefinition {
 
     int severity
 
-    boolean verbose
+    String mode
 
     List<String> positiveResponse
 

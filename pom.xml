@@ -317,14 +317,14 @@
                         <goals>
                             <goal>add-module-info</goal>
                         </goals>
-                        <configuration>
+                        <!--<configuration>
                             <overwriteExistingFiles>true</overwriteExistingFiles>
                             <module>
                                 <moduleInfoFile>
                                     src/main/java/module-info.java
                                 </moduleInfoFile>
                             </module>
-                        </configuration>
+                        </configuration>-->
                     </execution>
                 </executions>
             </plugin>

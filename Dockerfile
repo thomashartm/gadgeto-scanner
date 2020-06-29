@@ -1,6 +1,7 @@
 FROM kalilinux/kali-rolling
 
 # OS update
+RUN echo "deb http://old.kali.org/kali sana main non-free contrib" >> ./etc/apt/sources.list
 RUN apt-get update && apt-get -yu dist-upgrade -y
 
 # Install tools
@@ -10,19 +11,29 @@ RUN apt-get install -y openjdk-11-jdk
 
 # Python ENV installation
 RUN apt-get install -y \
+  python2.7 \
+  subversion \
   wget \
+  whatweb \
   nmap \
   sslyze \
   nikto \
   theharvester \
   whois \
-  dnsmap
+  dnsmap \
+  sublist3r \
+  knockpy \
+  wig \
+  dirb \
+  golismero
 
 RUN cd /tmp && \
     wget http://dl.bintray.com/groovy/maven/apache-groovy-binary-3.0.4.zip && \
     unzip apache-groovy-binary-3.0.4.zip && \
     mv groovy-3.0.4 /groovy && \
     rm apache-groovy-binary-3.0.4.zip
+
+ENV NMAP_SCRIPTS_REPOSITORY_URL https://svn.nmap.org/nmap/scripts/
 
 #ENV JAVA_HOME /jdk
 ENV GROOVY_HOME /groovy
@@ -33,6 +44,9 @@ EXPOSE 5050
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/app
+RUN svn checkout  https://svn.nmap.org/nmap/scripts/ nse
+#RUN wget -r -nH --cut-dirs=2 --no-parent --reject="index.html*" https://svn.nmap.org/nmap/scripts/http-backup-finder.nse -P /usr/app/nse
+
 WORKDIR /usr/app
 
 # add jar and default config
