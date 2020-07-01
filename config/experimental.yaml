@@ -2,9 +2,14 @@ id: experimental
 name: Experiments Phase to test new tools
 description: "Experimentation Phase"
 modules:
+  - name: "nmap fast port checks"
+    executable: "nmap"
+    args: "-F --open -Pn <url> | grep tcp"
+    severity: 0
+    mode: print
   - name: "assetfinder to detect related domains and subdomains "
     executable: "assetfinder"
     dependencies:
       - "httprobe"
-    args: "<url> | httprobe"
+    args: "<url> "
     mode: print

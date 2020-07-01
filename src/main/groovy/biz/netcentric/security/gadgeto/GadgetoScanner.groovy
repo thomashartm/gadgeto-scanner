@@ -5,8 +5,8 @@ import biz.netcentric.security.gadgeto.configuration.ConfigurationParser
 import biz.netcentric.security.gadgeto.engine.Phase
 import biz.netcentric.security.gadgeto.engine.cmd.CmdLayout
 import groovy.cli.picocli.CliBuilder
+import groovy.cli.picocli.OptionAccessor
 import groovy.util.logging.Slf4j
-import org.apache.commons.lang3.StringUtils
 
 import static biz.netcentric.security.gadgeto.engine.cmd.CmdSupport.printMessage
 
@@ -52,12 +52,10 @@ class GadgetoScanner {
     }
 
     private run(def options) {
-        final String configuration = options.getProperty('config')
-        List<File> configurations = this.getConfigDirectories(configuration)
-        loadPhases(configurations)
+        initConfigurationPhases(options)
 
         if(options.getProperty('list')){
-            phases.each {phase ->
+            this.phases.each {phase ->
                 println phase.getKey()
             }
             return
@@ -76,6 +74,19 @@ class GadgetoScanner {
         printMessage CmdLayout.HEADLINE,"[DONE] Gadgeto Scanner is done!"
     }
 
+    private void initConfigurationPhases(OptionAccessor options) {
+        String configuration
+        if (options.getProperty('config')) {
+            configuration = options.getProperty('config')
+        } else {
+            printMessage CmdLayout.HEADLINE, "[INIT] No config property provided. Falling back to to configuration location: config"
+            configuration = "config"
+        }
+        List<File> configurations = this.getConfigDirectories(configuration)
+
+        loadPhases(configurations)
+    }
+
     private void loadPhases(List<File> configurations){
         List<Phase> loadedPhaseConfigs = this.configParser.loadAllFromConfig(configurations)
         loadedPhaseConfigs.each {phase ->
@@ -84,14 +95,8 @@ class GadgetoScanner {
     }
 
     private List<File> getConfigDirectories(String configLocation){
-
-        if(StringUtils.isNotEmpty(configLocation)){
-            return this.configFinder.getConfigFiles([configLocation])
-        }else{
-            printMessage CmdLayout.HEADLINE, "[INIT] No config property provided. Falling back to to configuration location: config"
-            List<String> files = []
-            files.add("config")
-            return this.configFinder.getConfigFiles(files)
-        }
+        List<String> files = []
+        files.add(configLocation)
+        this.configFinder.getConfigFiles(files)
     }
 }

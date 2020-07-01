@@ -86,35 +86,15 @@ class CmdModule implements Module {
         severityLayout
     }
 
-    def execute(String target, Closure process) {
+    def execute(String target, Closure handleOutput) {
         def exec = moduleDefinition.getExecutable()
 
         String command = createCommand(target, exec)
-
-
         CmdSupport.printMessage CmdLayout.OKBLUE, "[NAME] ${moduleDefinition.getName()}"
         CmdSupport.printMessage exec, command
 
-        def proc = null
-        try {
-            proc = command.execute()
-            CmdToolResponse result = process(proc)
-            return result
-        } catch (Exception ex) {
-            CmdSupport.handleError(true, exec, command, ex)
-        } finally {
-            if (proc != null && proc.out != null && proc.out instanceof OutputStream) {
-                log.debug "Closing proc"
-                proc.out.close()
-            }
-        }
-
-        // replace upper statement with
-        //CommandlineProcessRunner runner = new CommandlineProcessRunner()
-        //CmdToolResponse result = runner.runProcess(exec, command, process)
-
-        // empty default response
-        return new CmdToolResponse()
+        CommandlineProcessRunner runner = new CommandlineProcessRunner()
+        runner.runProcess(exec, command, handleOutput)
     }
 
     private String createCommand(String target, exec) {

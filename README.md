@@ -48,11 +48,23 @@ Run the application while developing
 
     java -agentlib:jdwp=transport=dt_socket,address=5050,suspend=y,server=y -jar target/groovy-gadgeto-scanner-1.0-SNAPSHOT.jar --phase info --url http://172.17.0.3:8080/WebGoat
         
-## Installation for development
+## Installation and development workflow
 
 Run a container for local development
     
-    docker run -p 5050:5050 --rm -it -v $(pwd):/usr/app gadgetoscanner
+    docker run -p 5050:5050 --rm -it -v $(pwd):/usr/src gadgetoscanner
+    
+Build the scanner, outside of the container
+
+    mvn clean package    
+    
+Run the scanner freshly build inside the container 
+    
+    java -jar /usr/src/target/groovy-gadgeto-scanner-full.jar --config /usr/app/customconfig --phase whatever --url http://172.17.0.3:8080/WebGoat
+    
+Debug it
+    
+    java -agentlib:jdwp=transport=dt_socket,address=5050,suspend=y,server=y -jar /usr/src/target/groovy-gadgeto-scanner-full.jar --phase info --url http://172.17.0.3:8080/WebGoat
     
 ## Testing the application
 
