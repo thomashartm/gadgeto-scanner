@@ -29,14 +29,14 @@ modules:
     executable: "nmap"
     args: "-sV --script=/usr/app/nse/fingerprint-strings "
     severity: 0
-    mode: print
+    mode: filter
     positiveResponse:
       - "bobo"
   - name: "nmap banner grabbing"
     executable: "nmap"
     args: "-sV --script=/usr/app/nse/banner "
     severity: 0
-    mode: print
+    mode: filter
     positiveResponse:
       - "RE:22/tcp"
       - "banner"
@@ -44,7 +44,7 @@ modules:
     executable: "nmap"
     args: "-sV --script=/usr/app/nse/http-auth-finder "
     severity: 0
-    mode: print
+    mode: filter
   - name: "nmap backup finder"
     executable: "nmap"
     args: "-sV --script=/usr/app/nse/backup-finder -maxdepth 3 "

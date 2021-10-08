@@ -85,7 +85,7 @@ class GadgetoScanner {
 
     private List<File> getConfigDirectories(String configLocation){
 
-        if(StringUtils.isEmpty(configLocation)){
+        if(StringUtils.isNotEmpty(configLocation)){
             return this.configFinder.getConfigFiles([configLocation])
         }else{
             printMessage CmdLayout.HEADLINE, "[INIT] No config property provided. Falling back to to configuration location: config"

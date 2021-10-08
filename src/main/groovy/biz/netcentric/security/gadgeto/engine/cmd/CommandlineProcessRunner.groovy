@@ -11,6 +11,7 @@ class CommandlineProcessRunner {
         def proc = null
         def result = null
         try {
+            println command
             proc = command.execute()
             result = responseHandler(proc)
         } catch (Exception ex) {

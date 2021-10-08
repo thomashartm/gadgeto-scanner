@@ -1,0 +1,10 @@
+id: experimental
+name: Experiments Phase to test new tools
+description: "Experimentation Phase"
+modules:
+  - name: "assetfinder to detect related domains and subdomains "
+    executable: "assetfinder"
+    dependencies:
+      - "httprobe"
+    args: "<url> | httprobe"
+    mode: print
