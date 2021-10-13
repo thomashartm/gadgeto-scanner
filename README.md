@@ -7,9 +7,9 @@ Each check uses of a set of underlying tools such as nmap or sslyze.
 The application uses a dockerized Kali environment which has the required tools preinstalled. 
 
 # Why
-Because it costs a lot of time to pre execute the automation part of each pen testing phase and th eplethora of tools over and over again.
-Additionally each environment may have ifferent pre conditions and a slightly different stack. 
-So it makes sense to prepare and mantain different tools setups and configurations.
+Because it costs a lot of time to pre execute the automation part of each pen testing phase and the plethora of tools over and over again.
+Additionally each environment may have different pre conditions and a slightly different stack. 
+So it makes sense to prepare and maintain different tools setups and configurations.
 
 # Run it
 
