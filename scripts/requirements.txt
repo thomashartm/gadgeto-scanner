@@ -1,0 +1,6 @@
+requests
+beautifulsoup4
+dnspython
+httpx
+tldextract
+ollama

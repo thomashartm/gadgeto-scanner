@@ -126,3 +126,30 @@ Then connect with your remote debugger on port 50505
 * Check if dependencies are available 
 * Report generation     
 * Load configs from remote resources
+
+## Python Recon Agent
+A simple script to gather DNS information, HTTP headers and potential API endpoints from a target URL.
+
+Usage:
+```
+python3 scripts/recon_agent.py --url https://example.com --output report.json
+```
+The script stores a JSON report summarizing subdomains, DNS records, headers and more.
+
+## LLM Recon Orchestrator
+An optional helper script uses a locally running [Ollama](https://ollama.com) model
+to post-process and summarise the recon results.
+
+Ensure the `ollama` daemon is running and the Python requirements are installed:
+
+```bash
+pip install -r scripts/requirements.txt
+ollama serve &
+```
+
+Run the orchestrator to execute the recon agent and get a short summary:
+
+```bash
+python3 scripts/orchestrator.py https://example.com --model llama3
+```
+
