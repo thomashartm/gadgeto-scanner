@@ -1,5 +1,7 @@
 # Groovy Gadgeto Scanner
 
+!!!!WORK IN PROGRESS!!!
+
 Runs a set of security checks grouped by pentesting phase and configurable as pen testing profiles.
 For each situation, the container and the profile can be equipped with the fitting gadget. 
 
